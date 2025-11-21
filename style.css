@@ -1,0 +1,47 @@
+
+</head>
+<body>
+
+<header>
+  <h1>Avengers Suit Selector</h1>
+</header>
+
+<section class="carousel-wrapper">
+  <button id="prev" class="btn" aria-label="Previous">‹</button>
+
+  <div id="carousel" class="carousel" aria-hidden="false">
+    <div class="item" data-name="Black Panther"  data-desc="King of Wakanda. Expert tactician & enhanced physicals.">
+      <img src="https://i.imgur.com/4ZQZ4yF.png" alt="Black Panther">
+    </div>
+
+    <div class="item" data-name="Hulk"  data-desc="Immense strength and rage-fueled power.">
+      <img src="https://i.imgur.com/038hR4O.png" alt="Hulk">
+    </div>
+
+    <div class="item" data-name="Spider-Man"  data-desc="Agile, quick-witted, web-slinger protecting the neighborhood.">
+      <img src="https://i.imgur.com/7Ae7dDC.png" alt="Spider-Man">
+    </div>
+
+    <div class="item" data-name="Captain America" 
+             data-desc="Leader, brave, symbol of hope." 
+             data-bgm="captain.mp3">
+            <img src="https://i.imgur.com/8tLULQJ.png">
+        </div>
+
+    <div class="item" data-name="Iron Man"  data-desc="Genius inventor with powered suits and tech mastery.">
+      <img src="https://i.imgur.com/nFt5E4X.png" alt="Iron Man">
+    </div>
+
+    <div class="item" data-name="Thor"  data-desc="God of Thunder, royal warrior wielding powerful storms.">
+      <img src="https://i.imgur.com/GBpiQf5.png" alt="Thor">
+    </div>
+  </div>
+
+  <button id="next" class="btn" aria-label="Next">›</button>
+</section>
+
+<!-- Info below - separated -->
+<section class="info-section" aria-live="polite">
+  <div id="charName" class="character-name">Click the center card</div>
+  <div id="charDesc" class="character-desc">Select the centered hero card to view details. Click a side card to rotate it to the center first.</div>
+</section>

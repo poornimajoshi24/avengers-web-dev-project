@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Avengers Assemble</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@900&family=Orbitron:wght@700;900&family=Audiowide&family=Rajdhani:wght@600;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Universal Box-Sizing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body & Global Styles - Adjusted for Vertical Spacing */
+        body {
+            font-family: "Poppins", sans-serif;
+            background: radial-gradient(circle at center, #11131f, #000);
+            overflow: hidden; /* Prevent unwanted scrollbars */
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column; /* Stack children vertically */
+            justify-content: space-between; /* Distribute space between items (title, wrapper, info-box) */
+            align-items: center; /* Center horizontally */
+            position: relative; /* Needed for absolute/fixed children positioning context */
+            padding-top: 20px; /* Padding at the very top */
+            padding-bottom: 20px; /* Padding at the very bottom */
+        }
+
+        /* Main Heading (H1) - Pushed to Top */
+        h1 {
+            text-align: center;
+            font-size: 70px;
+            letter-spacing: 5px;
+            font-family: 'Bebas Neue', 'Montserrat', sans-serif;
+            font-weight: normal;
+            color: #00eaff;
+            text-shadow:
+                0 0 10px rgba(0, 234, 255, 0.7),
+                0 0 20px rgba(0, 234, 255, 0.4);
+            z-index: 15;
+            position: relative;
+            flex-shrink: 0; /* Prevent it from shrinking */
+        }
+
+        /* ---------- MAIN WRAPPER FOR CAROUSEL AND BUTTONS - Centered ---------- */
+        .wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            perspective: 1400px;
+            flex-grow: 1; /* Allow it to grow and take available space */
+            flex-shrink: 1; /* Allow it to shrink if needed */
+            min-height: 450px; /* Ensure carousel area has a minimum height */
+            margin: auto 0; /* Auto margins will center it vertically within remaining space */
+        }
+
+        /* ---------- CAROUSEL CONTAINER ---------- */
+        .carousel {
+            width: 320px;
+            height: 420px;
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: transform 1s ease;
+        }
+
+        /* ---------- INDIVIDUAL CAROUSEL ITEMS ---------- */
+        .item {
+            width: 220px;
+            height: 320px;
+            border-radius: 18px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-style: preserve-3d;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform .4s, box-shadow .4s;
+            z-index: 10;
+            
+        }
+
+        /* Hover effect for non-active items */
+        .item:not(.active):hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+        }
+
+        /* Image within carousel item */
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+
+        /* 3D Positioning of the 6 items in a circle */
+        .item:nth-child(1) { transform: rotateY(0deg) translateZ(380px) translate(-50%, -50%); }
+        .item:nth-child(2) { transform: rotateY(60deg) translateZ(380px) translate(-50%, -50%); }
+        .item:nth-child(3) { transform: rotateY(120deg) translateZ(380px) translate(-50%, -50%); }
+        .item:nth-child(4) { transform: rotateY(180deg) translateZ(380px) translate(-50%, -50%); }
+        .item:nth-child(5) { transform: rotateY(240deg) translateZ(380px) translate(-50%, -50%); }
+        .item:nth-child(6) { transform: rotateY(300deg) translateZ(380px) translate(-50%, -50%); }
+
+        /* Style for the currently active (clicked) item */
+        .item.active {
+            transform: translate(-50%, -50%) scale(1.35) translateZ(200px) !important;
+            z-index: 20;
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.7);
+            transition: transform 0.55s ease, box-shadow 0.55s ease;
+        }
+
+        /* ---------- NAVIGATION BUTTONS ---------- */
+        .btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #fff;
+            transition: .3s;
+            z-index: 20;
+            font-size: 24px;
+        }
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) scale(1.1);
+        }
+        #prev { left: 25px; }
+        #next { right: 25px; }
+
+        /* ---------- INFO BOX AT THE BOTTOM - Pushed to Bottom ---------- */
+       .info-box {
+    position: absolute;   /* IMPORTANT */
+    bottom: 30px;         /* jitna upar chahiye utna adjust kar lo */
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: fit-content;
+    max-width: 80%;
+    background: rgba(0,0,0,0.5);
+    padding: 20px 40px;
+    border-radius: 15px;
+    text-align: center;
+    z-index: 100;
+    box-shadow: 0 0 30px rgba(0, 234, 255, 0.3);
+}
+        /* Character Name (Cyberpunk style) */
+        .character-name {
+            font-family: 'Orbitron', 'Audiowide', 'Rajdhani', sans-serif;
+            font-size: 38px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            color: #00eaff;
+            text-shadow:
+                0 0 8px rgba(0, 234, 255, 0.7),
+                0 0 15px rgba(0, 234, 255, 0.4),
+                0 0 25px rgba(0, 234, 255, 0.2);
+        }
+
+        /* Character Description */
+        .character-desc {
+        font-family: 'Copperplate Gothic Light', 'Copperplate', serif;
+            font-size: 18px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        /* ---------- BACKGROUND OVERLAYS (CIRCUIT/HUD ELEMENTS) ---------- */
+        .background-overlay {
+            position: fixed;
+            width: 250px;
+            height: 250px;
+            opacity: 0.08;
+            /* background-image: url('https://i.imgur.com/2s4d3eY.png');
+            background-size: cover;
+            z-index: 5; */
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        .top-left-overlay { top: 0; left: 0; transform: rotate(0deg); animation: pulseOverlay 8s infinite alternate; }
+        .top-right-overlay { top: 0; right: 0; transform: rotate(90deg); animation: pulseOverlay 9s infinite alternate; }
+        .bottom-left-overlay { bottom: 0; left: 0; transform: rotate(-90deg); animation: pulseOverlay 7s infinite alternate; }
+        .bottom-right-overlay { bottom: 0; right: 0; transform: rotate(180deg); animation: pulseOverlay 10s infinite alternate; }
+
+        @keyframes pulseOverlay {
+            0% { opacity: 0.08; }
+            50% { opacity: 0.12; }
+            100% { opacity: 0.08; }
+        }
+
+        /* ---------- SUBTLE GLIMMERS/LENS FLARES (PSEUDO-ELEMENTS) ---------- */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(0, 234, 255, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+            filter: blur(25px);
+            animation: subtleGlimmer 14s infinite ease-in-out alternate;
+        }
+        body::before { top: 8%; left: 6%; animation-delay: 0s; transform: scale(0.8); }
+        body::after { bottom: 12%; right: 7%; animation-delay: 7s; transform: scale(1.1); }
+
+        @keyframes subtleGlimmer {
+            0% { opacity: 0.1; transform: translate(0, 0) scale(0.9); }
+            50% { opacity: 0.25; transform: translate(25px, 35px) scale(1.1); }
+            100% { opacity: 0.1; transform: translate(0, 0) scale(0.9); }
+        }
+
+        /* ---------- FICTIONAL UI DATA BLOCKS ---------- */
+        .ui-data-block {
+            position: fixed;
+            padding: 8px 15px;
+            background: rgba(0, 234, 255, 0.05);
+            border: 1px solid rgba(0, 234, 255, 0.2);
+            border-radius: 5px;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            color: rgba(0, 234, 255, 0.7);
+            z-index: 10;
+            pointer-events: none;
+            line-height: 1.4;
+            text-shadow: 0 0 5px rgba(0, 234, 255, 0.4);
+        }
+        .top-left-data { top: 30px; left: 30px; }
+        .top-right-data { top: 30px; right: 30px; }
+        .bottom-left-data { bottom: 30px; left: 30px; }
+        .bottom-right-data { bottom: 30px; right: 30px; }
+
+        /* ---------- MEDIA QUERIES FOR RESPONSIVENESS ---------- */
+        @media(max-width:768px){
+            body { padding-top: 15px; padding-bottom: 15px; }
+            h1 { font-size: 50px; letter-spacing: 3px; }
+            .wrapper { min-height: 350px; } /* Adjusted min-height for smaller screens */
+            .carousel{ width:260px; height:350px; }
+            .item{ width:180px; height:260px; }
+            .item:nth-child(1) { transform: rotateY(0deg) translateZ(280px) translate(-50%, -50%); }
+            .item:nth-child(2) { transform: rotateY(60deg) translateZ(280px) translate(-50%, -50%); }
+            .item:nth-child(3) { transform: rotateY(120deg) translateZ(280px) translate(-50%, -50%); }
+            .item:nth-child(4) { transform: rotateY(180deg) translateZ(280px) translate(-50%, -50%); }
+            .item:nth-child(5) { transform: rotateY(240deg) translateZ(280px) translate(-50%, -50%); }
+            .item:nth-child(6) { transform: rotateY(300deg) translateZ(280px) translate(-50%, -50%); }
+            .item.active { transform: translate(-50%, -50%) scale(1.2) translateZ(150px) !important; }
+
+            #prev{ left:10px; padding: 8px 14px; font-size: 20px;}
+            #next{ right:10px; padding: 8px 14px; font-size: 20px;}
+
+            .info-box { padding: 15px 25px; max-width: 90%; min-width: unset; }
+            .character-name { font-size: 30px; letter-spacing: 1px;}
+            .character-desc { font-size: 16px; }
+
+            .background-overlay { width: 150px; height: 150px; opacity: 0.05; }
+            body::before, body::after { width: 80px; height: 80px; filter: blur(15px); }
+            .ui-data-block { font-size: 10px; padding: 6px 10px; }
+            .top-left-data { top: 15px; left: 15px; }
+            .top-right-data { top: 15px; right: 15px; }
+            .bottom-left-data { bottom: 15px; left: 15px; }
+            .bottom-right-data { bottom: 15px; right: 15px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="background-overlay top-left-overlay"></div>
+    <div class="background-overlay top-right-overlay"></div>
+    <div class="background-overlay bottom-left-overlay"></div>
+    <div class="background-overlay bottom-right-overlay"></div>
+
+    <div class="ui-data-block top-left-data">
+        <span>STATUS: ONLINE</span><br>
+        <span>SYSTEM: V.7.2.1</span>
+    </div>
+    <div class="ui-data-block top-right-data">
+        <span>SCAN: IDLE</span><br>
+        <span>ENERGY: 98%</span>
+    </div>
+    <div class="ui-data-block bottom-left-data">
+        <span>PROTOCOL: A</span><br>
+        <span>COORDS: 34.05,-118.25</span>
+    </div>
+    <div class="ui-data-block bottom-right-data">
+        <span>FRIDAY: ACTIVE</span><br>
+        <span>TEMP: 22°C | 72°F</span>
+    </div>
+
+    <h1>Avengers Assemble</h1>
+
+    <div class="wrapper">
+        <button class="btn" id="prev">⟨</button>
+        <button class="btn" id="next">⟩</button>
+        <div class="carousel" id="carousel">
+            <div class="item" data-index="0" data-name="Iron Man" data-desc="Genius, Billionaire, Philanthropist. His suits are marvels of advanced weaponry and AI." data-bgm="ironman.mp3">
+                <img src="ironman.jpg" alt="Iron Man Suit">
+            </div>
+            <div class="item" data-index="1" data-name="Captain America" data-desc="Leader, brave, symbol of hope. Enhanced by super-soldier serum with an unbreakable shield." data-bgm="captain.mp3">
+                <img src="captainamerica.jpg" alt="Captain America Suit">
+            </div>
+            <div class="item" data-index="2" data-name="Thor" data-desc="God of Thunder with unmatched power. Wields the mighty Mjolnir (and Stormbreaker) to control storms." data-bgm="thor.mp3">
+                <img src="thor.jpg" alt="Thor Suit">
+            </div>
+            <div class="item" data-index="3" data-name="Hulk" data-desc="Strongest Avenger (he says so). Dr. Banner's gamma-powered alter-ego, fueled by rage." data-bgm="hulk.mp3">
+                <img src="hulk.jpg" alt="Hulk">
+            </div>
+            <div class="item" data-index="4" data-name="Black Panther" data-desc="King of Wakanda, unmatched agility. His vibranium suit absorbs and redirects kinetic energy." data-bgm="blackpanther.mp3">
+                <img src="blackpanther.jpg" alt="Black Panther Suit">
+            </div>
+            <div class="item" data-index="5" data-name="Spider-Man" data-desc="Friendly neighborhood superhero. Agile web-slinger with a keen sense of responsibility and wit." data-bgm="spiderman.mp3">
+                <img src="spiderman.jpg" alt="Spider-Man Suit">
+            </div>
+        </div>
+    </div>
+
+    <div class="info-box">
+        <div class="character-name" id="charName">Click a Character</div>
+        <div class="character-desc" id="charDesc">Suit details will appear here.</div>
+    </div>
+
+    <audio id="bgmPlayer" loop></audio>
+
+    <script>
+        // JavaScript for Carousel Functionality and Interactivity
+        let angle = 0; // Current rotation angle of the carousel
+        const carousel = document.getElementById("carousel");
+        const items = document.querySelectorAll(".item"); // All individual character items
+
+        const nameBox = document.getElementById("charName"); // Element for character name
+        const descBox = document.getElementById("charDesc"); // Element for character description
+        const bgm = document.getElementById("bgmPlayer"); // Audio player element
+
+        let activeIndex = -1; // -1 means no item is currently active/clicked
+
+        // Function to apply the current rotation angle to the carousel
+        function rotateCarousel() {
+        items.forEach((item) => {
+            const index = Number(item.dataset.index);
+            // Calculate new angle per item including the carousel rotation angle
+            const baseAngle = 60 * index + angle;
+            // Base transform for non-active item: rotate and translateZ, centered by translate(-50%, -50%)
+            let transformString = `rotateY(${baseAngle}deg) translateZ(380px) translate(-50%, -50%)`;
+
+            // Add pop-out effect if active
+            if (index === activeIndex) {
+                transformString += ' translateZ(200px) scale(1.35)';
+                item.style.zIndex = 20;
+                item.style.boxShadow = '0 0 40px rgba(0, 255, 255, 0.7)';
+            } else {
+                item.style.zIndex = 10;
+                item.style.boxShadow = 'none';
+            }
+            item.style.transform = transformString;
+        });
+        // Clear container rotation transform so children rotate individually
+        carousel.style.transform = '';
+    }
+
+
+        // Function to remove 'active' class from all items, reset info box, and pause audio
+        function removeActive() {
+            items.forEach(i => i.classList.remove("active")); // Remove active class from all items
+            activeIndex = -1; // Reset active index
+            // Reset info box to default text
+            nameBox.innerText = "Click a Character";
+            descBox.innerText = "Suit details will appear here.";
+            bgm.pause(); // Pause music when carousel rotates
+            bgm.currentTime = 0; // Reset music to beginning
+        }
+
+        // Event listener for "Next" button click
+        document.getElementById("next").onclick = () => {
+            angle -= 60; // Rotate 60 degrees clockwise
+            rotateCarousel();
+            removeActive(); // Reset active state and info
+        };
+
+        // Event listener for "Previous" button click
+        document.getElementById("prev").onclick = () => {
+            angle += 60; // Rotate 60 degrees counter-clockwise
+            rotateCarousel();
+            removeActive(); // Reset active state and info
+        };
+
+        // Event listener for clicking on individual character items
+        items.forEach(item => {
+            item.addEventListener("click", () => {
+                const index = parseInt(item.dataset.index); // Get the index of the clicked item
+
+                // Calculate the angle needed to bring the clicked item to the front
+                angle = -60 * index;
+                rotateCarousel();
+
+                // Apply the pop-out effect to the clicked item
+                items.forEach(i => i.classList.remove("active")); // Remove active class from all items first
+                item.classList.add("active"); // Add active class to the currently clicked item
+                activeIndex = index; // Update the active index
+
+                // Update the info box with data from the clicked item's data attributes
+                nameBox.innerText = item.dataset.name;
+                descBox.innerText = item.dataset.desc;
+
+                // Play hero-specific background music
+                if (item.dataset.bgm) { // Check if a music file is specified
+                    if (bgm.src !== item.dataset.bgm) { // If it's a new track
+                        bgm.src = item.dataset.bgm; // Set new track source
+                        bgm.play().catch(e => console.log("Audio play failed:", e)); // Attempt to play with error handling
+                    } else if (bgm.paused) { // If it's the same track but paused
+                        bgm.play().catch(e => console.log("Audio play failed:", e)); // Resume playing
+                    }
+                } else {
+                    bgm.pause(); // If no music specified, pause current music
+                    bgm.currentTime = 0;
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
