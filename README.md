@@ -19,3 +19,12 @@ This project was created to strengthen my fundamentals of React, component-based
 HTML5
 CSS3 
 JavaScript (ES6)
+
+
+🧠 What I Learned
+-Understanding React.createRoot and rendering flow
+-Breaking UI into reusable components
+-Passing data using props
+-Managing layout and styling issues
+-Debugging common React rendering errors
+-Structuring a real-world frontend project
