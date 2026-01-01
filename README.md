@@ -16,7 +16,7 @@ This project was created to strengthen my fundamentals of React, component-based
 
 🛠️ Tech Stack
 
-HTML5
+HTML
 CSS3 
 JavaScript (ES6)
 
