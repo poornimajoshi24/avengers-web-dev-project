@@ -14,7 +14,7 @@ This project was created to strengthen my fundamentals of React, component-based
 📱 Responsive layout (basic)
 
 
-🛠️ Tech Stack
+🛠️ Tech Stac
 
 HTML5
 CSS3 
