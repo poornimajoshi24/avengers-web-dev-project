@@ -27,4 +27,4 @@ JavaScript (ES6)
 -Passing data using props
 -Managing layout and styling issues
 -Debugging common React rendering errors
--Structuring a real-world frontend projec
+-Structuring a real-world frontend project
